@@ -5,7 +5,6 @@ from tabs.common.line_chart import LineChart
 import matplotlib.pyplot as plt
 import mplcyberpunk
 import psutil
-import tkinter as tk
 
 import cpuinfo
 
@@ -35,8 +34,23 @@ class CpuTab:
 
     def populate_info(self):
         info = cpuinfo.get_cpu_info()
+        cpu_info = {
+            "Brand": info["brand_raw"],
+            "Architecture": info["arch"],
+            "Bits": info["bits"],
+            "Cores": psutil.cpu_count(logical=False),
+            "Threads": psutil.cpu_count(logical=True),
+            "Frequency": info["hz_actual_friendly"],
+            "L2 Cache": info["l2_cache_size"],
+            "L3 Cache": info["l3_cache_size"],
+            "Vendor": info["vendor_id_raw"],
+            # "Family": info["family_raw"],
+            # "Model": info["model_raw"],
+            "Stepping": info["stepping"],
+            "Flags": info["flags"]
+        }
         self.info_frame = ScrollableInfoFrame(master=self.tabview.tab("info"),
                                               command=None,
-                                              item_list=info.items(), width=WIDTH - 20,
+                                              item_list=cpu_info.items(), width=WIDTH - 20,
                                               height=HEIGHT - 20)
         self.info_frame.grid(row=0, column=0, padx=15, pady=15, sticky="ns")
