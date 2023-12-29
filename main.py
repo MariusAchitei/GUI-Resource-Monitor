@@ -11,6 +11,7 @@ mplcyberpunk.add_glow_effects()
 
 plt.style.use("cyberpunk")
 
+
 # Clasa pentru aplicația GUI
 class SystemMonitorApp:
     def __init__(self, root):
@@ -41,9 +42,8 @@ class SystemMonitorApp:
         self.cpu_canvas.get_tk_widget().pack()
 
         self.cpu_bar = ttk.Progressbar(self.cpu_tab, style="modern.Horizontal.TProgressbar", orient="horizontal",
-                                      length=200, mode="determinate")
+                                       length=200, mode="determinate")
         self.cpu_bar.pack(pady=30)
-
 
         self.cpu_label = tk.Label(self.cpu_tab, text='0%', bg='white')
         self.cpu_label.place(in_=self.cpu_bar, relx=1.0, x=20, rely=0)  # Adjust the position as neede
@@ -57,7 +57,7 @@ class SystemMonitorApp:
         self.memory_canvas.get_tk_widget().pack()
 
         self.memory_bar = ttk.Progressbar(self.memory_tab, style="modern.Horizontal.TProgressbar", orient="horizontal",
-                                  length=200, mode="determinate")
+                                          length=200, mode="determinate")
         self.memory_bar.pack(pady=30)
 
         self.memory_label = tk.Label(self.memory_tab, text='0%', bg='white')
@@ -65,21 +65,21 @@ class SystemMonitorApp:
 
         self.update_memory_usage()
 
-    def update_cpu_usage(self):
-        cpu_percent = psutil.cpu_percent()
-        self.cpu_bar['value'] = cpu_percent
-        self.cpu_usage.append(cpu_percent)
-        self.cpu_ax.clear()
-        self.cpu_ax.set_ylim(0, 100)
-        self.cpu_ax.plot(self.cpu_usage, marker='o')
-        mplcyberpunk.add_glow_effects()
-        self.cpu_ax.set_title("CPU Usage")
-        self.cpu_canvas.draw()
-
-        self.cpu_label['text'] = f'{cpu_percent}%'
-
-        # Actualizează graficul la fiecare secundă
-        self.root.after(1000, self.update_cpu_usage)
+    # def update_cpu_usage(self):
+    #     cpu_percent = psutil.cpu_percent()
+    #     self.cpu_bar['value'] = cpu_percent
+    #     self.cpu_usage.append(cpu_percent)
+    #     self.cpu_ax.clear()
+    #     self.cpu_ax.set_ylim(0, 100)
+    #     self.cpu_ax.plot(self.cpu_usage, marker='o')
+    #     mplcyberpunk.add_glow_effects()
+    #     self.cpu_ax.set_title("CPU Usage")
+    #     self.cpu_canvas.draw()
+    #
+    #     self.cpu_label['text'] = f'{cpu_percent}%'
+    #
+    #     # Actualizează graficul la fiecare secundă
+    #     self.root.after(1000, self.update_cpu_usage)
 
     def update_memory_usage(self):
         memory = psutil.virtual_memory()
