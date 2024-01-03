@@ -1,3 +1,4 @@
+from tabs.disk import init_disk
 from tabs.home import init_home
 from tabs.cpu import init_cpu
 from tabs.memory import init_memory
@@ -18,4 +19,9 @@ TABS = {
         "frame": None,
         "init": init_memory
     },
+    "disk": {
+        "button": None,
+        "frame": None,
+        "init": init_disk
+    }
 }
