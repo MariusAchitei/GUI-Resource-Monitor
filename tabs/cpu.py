@@ -40,7 +40,7 @@ class CpuTab:
         self.usagetabview.add("per core")
         self.usagetabview.tab("general").grid_columnconfigure(0, weight=1)
         self.usagetabview.tab("per core").grid_columnconfigure(0, weight=1)
-        LineChart(self.usagetabview.tab("general"), update_cpu_function, mplcyberpunk.add_glow_effects)
+        LineChart(self.usagetabview.tab("general"), update_cpu_function, effects=mplcyberpunk.add_glow_effects)
         self.init_per_core_usage(self.usagetabview.tab("per core"))
 
     def populate_info(self):

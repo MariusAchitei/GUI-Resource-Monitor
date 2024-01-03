@@ -2,6 +2,7 @@ from tabs.disk import init_disk
 from tabs.home import init_home
 from tabs.cpu import init_cpu
 from tabs.memory import init_memory
+from tabs.nework import init_network
 
 TABS = {
     "home": {
@@ -23,5 +24,10 @@ TABS = {
         "button": None,
         "frame": None,
         "init": init_disk
+    },
+    "network": {
+        "button": None,
+        "frame": None,
+        "init": init_network
     }
 }

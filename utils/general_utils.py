@@ -17,6 +17,10 @@ def bytes2human(n, format="%(value).1f%(symbol)s"):
     return format % dict(symbol=symbols[0], value=n)
 
 
+def speed_bytes2human2(n):
+    return f'{bytes2human(n)}/s'
+
+
 def seconds2human(seconds):
     h = seconds / 3600
     if h >= 1:
