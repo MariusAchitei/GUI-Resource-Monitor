@@ -13,7 +13,6 @@ class NetworkMonitorThread(threading.Thread):
         while not self._stop_event.is_set():
             for update_function in self.update_functions:
                 update_function()
-            time.sleep(self.interval)
 
     def stop(self):
         self._stop_event.set()
