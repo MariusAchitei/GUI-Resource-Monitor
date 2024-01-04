@@ -4,10 +4,8 @@ from tabs.common.ScrollableInfoFrame import ScrollableInfoFrame
 from tabs.common.line_chart import LineChart
 import matplotlib.pyplot as plt
 import mplcyberpunk
-import psutil
-from utils.general_utils import bytes2human
 
-import cpuinfo
+from utils.cpu_utils import *
 
 WIDTH = 500
 HEIGHT = 400
@@ -16,10 +14,6 @@ HEIGHT = 400
 def init_cpu(root):
     plt.style.use("cyberpunk")
     CpuTab(root)
-
-
-def update_cpu_function():
-    return psutil.cpu_percent()
 
 
 class CpuTab:
@@ -44,22 +38,7 @@ class CpuTab:
         self.init_per_core_usage(self.usagetabview.tab("per core"))
 
     def populate_info(self):
-        info = cpuinfo.get_cpu_info()
-        cpu_info = {
-            "Brand": info["brand_raw"],
-            "Architecture": info["arch"],
-            "Bits": info["bits"],
-            "Cores": psutil.cpu_count(logical=False),
-            "Threads": psutil.cpu_count(logical=True),
-            "Frequency": info["hz_actual_friendly"],
-            "L2 Cache": bytes2human(int(info["l2_cache_size"])),
-            "L3 Cache": bytes2human(int(info["l3_cache_size"])),
-            "Vendor": info["vendor_id_raw"],
-            # "Family": info["family_raw"],
-            # "Model": info["model_raw"],
-            "Stepping": info["stepping"],
-            "Flags": info["flags"]
-        }
+        cpu_info = get_cpu_info()
         self.info_frame = ScrollableInfoFrame(master=self.tabview.tab("info"),
                                               command=None,
                                               item_list=cpu_info.items(), width=WIDTH - 20,
@@ -68,7 +47,7 @@ class CpuTab:
 
     def init_per_core_usage(self, parent):
         cpus = {}
-        for index, percent in enumerate(list(psutil.cpu_percent(percpu=True))):
+        for index, percent in enumerate(list(get_per_core_usage())):
             cpus[f"cpu{index + 1}"] = percent
         self.per_core_usage = ScrollableInfoFrame(master=parent,
                                                   command=None,
@@ -81,7 +60,7 @@ class CpuTab:
 
     def update_per_core_usage(self):
         cpus = {}
-        for index, percent in enumerate(list(psutil.cpu_percent(percpu=True))):
+        for index, percent in enumerate(list(get_per_core_usage())):
             cpus[f"cpu{index + 1}"] = f"{percent}%"
         self.per_core_usage.update_items(cpus.items())
         self.per_core_usage.after(1000, self.update_per_core_usage)
