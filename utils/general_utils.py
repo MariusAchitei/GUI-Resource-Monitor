@@ -1,4 +1,6 @@
+import os
 import re
+from datetime import datetime
 
 
 def string_to_float(string):
@@ -33,3 +35,12 @@ def seconds2human(seconds):
 
 def choose_equidistant_timestamps(length, max_count):
     return [(max(length, max_count) // max_count + 1) * i for i in range(max_count)]
+
+
+def get_current_date_time():
+    return datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
+
+
+def create_directory_if_not_exists(path):
+    if not os.path.exists(path):
+        os.makedirs(path)

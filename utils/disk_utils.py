@@ -23,5 +23,5 @@ def get_partition_info(part):
     return info
 
 
-def get_partition_usage(part: psutil._common.sdiskpart):
+def get_partition_usage(part):
     return shutil.disk_usage(part.mountpoint)

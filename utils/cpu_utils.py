@@ -4,7 +4,10 @@ from utils.general_utils import bytes2human
 
 
 def get_per_core_usage():
-    psutil.cpu_percent(percpu=True)
+    cpus = {}
+    for index, percent in enumerate(list(psutil.cpu_percent(percpu=True))):
+        cpus[f"cpu{index + 1}"] = f"{percent}%"
+    return cpus
 
 
 def update_cpu_function():
@@ -28,3 +31,4 @@ def get_cpu_info():
         "Stepping": info["stepping"],
         "Flags": info["flags"]
     }
+    return cpu_info

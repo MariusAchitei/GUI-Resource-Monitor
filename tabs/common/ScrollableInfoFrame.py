@@ -1,19 +1,28 @@
+import os
+from datetime import datetime
+
 import customtkinter
 import tkinter as tk
+import csv
 
 from utils.general_utils import string_to_float
+from utils.general_utils import create_directory_if_not_exists
 
 
 class ScrollableInfoFrame(customtkinter.CTkScrollableFrame):
-    def __init__(self, master, item_list, command=None, enable_progress_bar=False, **kwargs):
+    def __init__(self, master, item_list, command=None, enable_progress_bar=False, enable_average=False, **kwargs):
         super().__init__(master, **kwargs)
-
+        self.start_time = datetime.now()
         self.command = command
         self.key_labels = []
         self.value_labels = []
         self.progress_bars = []
-        self.items = []
         self.enable_progress_bar = enable_progress_bar
+        self.enable_average = enable_average
+        if enable_average:
+            self.sum = [0] * len(item_list)
+            self.counts = [0] * len(item_list)
+            self.averages = []
 
         for row, (key, value) in enumerate(item_list):
             self.add_item(row, key, value)
@@ -32,6 +41,13 @@ class ScrollableInfoFrame(customtkinter.CTkScrollableFrame):
             progress_bar = customtkinter.CTkProgressBar(self, width=100, height=20, corner_radius=0)
             progress_bar.grid(row=row, column=2, padx=10, sticky="w")
             self.progress_bars.append(progress_bar)
+        if self.enable_average:
+            self.sum[row] = string_to_float(value)
+            self.counts[row] += 1
+            avg = round(self.sum[row] / self.counts[row], 2)
+            average_label = customtkinter.CTkLabel(self, text=f'Average: {str(avg)}', width=20, anchor="w")
+            average_label.grid(row=row, column=3, padx=10, sticky="w")
+            self.averages.append(average_label)
 
     def update_items(self, item_list):
         for row, (key, value) in enumerate(item_list):
@@ -43,3 +59,21 @@ class ScrollableInfoFrame(customtkinter.CTkScrollableFrame):
         if self.enable_progress_bar:
             # self.progress_bars[row].configure()
             self.progress_bars[row].set(string_to_float(value) / 100)
+        if self.enable_average:
+            self.sum[row] += string_to_float(value)
+            self.counts[row] += 1
+            avg = round(self.sum[row] / self.counts[row], 2)
+            self.averages[row].configure(text=f'Average: {str(avg)}')
+
+    def save_state_as_csv(self, csv_file_path):
+        create_directory_if_not_exists(csv_file_path)
+        file_exists = os.path.exists(csv_file_path)
+        with open(csv_file_path, 'a', newline='') as file:
+            writer = csv.writer(file)
+            if not file_exists:
+                writer.writerow(['start', 'end', 'elapsed_time'] + [label.cget('text') for label in self.key_labels])
+            row = [datetime.now(), datetime.now() - self.start_time]
+            if self.enable_average:
+                row += [label.cget('text') for label in self.averages]
+            else:
+                row += [label.cget('text') for label in self.value_labels]

@@ -1,18 +1,20 @@
+import customtkinter
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
+from tabs.common.base_chart import BaseChart
 
-class PieChart:
-    def __init__(self, root, proportions, labels, title):
+
+class PieChart(BaseChart):
+    def __init__(self, root, proportions, labels, title="Pie Chart", screenshot_path='screenshots/other'):
+        super().__init__(root, screenshot_path=screenshot_path)
+
         wedge_colors = ['#86c7f3', '#8be06e', '#f39c7c', '#ffb366']
         background_color = '#302c2c'
 
-        self.root = root
         self.proportions = proportions
         self.labels = labels
         self.title = title
-        self.fig, self.ax = plt.subplots()
-        self.canvas = FigureCanvasTkAgg(self.fig, master=self.root)
         wedges, texts, autotexts = self.ax.pie(proportions, labels=labels, autopct='%1.1f%%', startangle=90,
                                                colors=wedge_colors, wedgeprops=dict(width=0.3))
 
@@ -24,4 +26,3 @@ class PieChart:
 
         self.ax.axis('equal')
         self.ax.set_title(title)
-        self.canvas.get_tk_widget().pack()
