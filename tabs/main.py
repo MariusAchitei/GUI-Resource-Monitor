@@ -3,6 +3,7 @@ from tabs.home import init_home
 from tabs.cpu import init_cpu
 from tabs.memory import init_memory
 from tabs.nework import init_network
+from tabs.history import init_history
 
 screenshot_path = "screenshots"
 
@@ -36,7 +37,7 @@ TABS = {
         "frame": None,
         "init": init_network,
         "image": "network.png"
-    }
+    },
     "history": {
         "button": None,
         "frame": None,

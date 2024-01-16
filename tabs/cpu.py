@@ -73,13 +73,14 @@ class CpuTab(BaseTab):
         self.per_core_usage.save_state_as_csv(f'{self.export_path}/per_core.csv')
 
     def get_state(self):
-        return {
-            "chart": self.chart.get_state(),
-            "per_core_usage": self.per_core_usage.get_state(),
-            "info_frame": self.info_frame.get_state()
-        }
+        # return {
+        #     "chart": self.chart.get_state(),
+        # "per_core_usage": self.per_core_usage.get_state(),
+        # "info_frame": self.info_frame.get_state()
+        # }
+        return self.chart.get_state()
 
     def set_state(self, state):
         self.chart.load_state(state["chart"])
-        self.per_core_usage.load_state(state["per_core_usage"])
-        self.info_frame.load_state(state["info_frame"])
+        # self.per_core_usage.load_state(state["per_core_usage"])
+        # self.info_frame.load_state(state["info_frame"])

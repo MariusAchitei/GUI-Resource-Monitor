@@ -19,8 +19,9 @@ class LineChart(BaseChart):
     def __init__(self, root, update_function, effects=lambda x: (), y_limit=(0, 100),
                  y_label_function=lambda x: f'{x}%',
                  dinamic_y_limit=False, self_update=True, title="Usage",
-                 screenshot_path='screenshots/other'):
+                 screenshot_path='screenshots/other', state=None):
         super().__init__(root)
+
         self.start_time = datetime.now()
         self.update_function = update_function
         self.effects = effects
@@ -42,7 +43,9 @@ class LineChart(BaseChart):
 
         self.avg_label = customtkinter.CTkLabel(root, text='Average: 0', width=20, anchor="w")
         self.avg_label.pack(pady=10)
-
+        if state is not None:
+            self.load_state(state)
+            return
         if self_update:
             self.update_line_chart()
 
@@ -115,7 +118,7 @@ class LineChart(BaseChart):
             'max_usage': self.max_usage,
             'y_limit': self.y_limit,
             'sum': self.sum,
-            # 'update_function': self.update_function,
+            'update_function': self.update_function,
             'effects': self.effects,
             'self_update': self.self_update,
             'title': self.title,
@@ -134,7 +137,7 @@ class LineChart(BaseChart):
         self.effects = state['effects']
         self.self_update = state['self_update']
         self.title = state['title']
-        self.y_label_function = state['y_label_function']
+        # self.y_label_function = state['y_label_function']
         self.dinamic_y_limit = state['dinamic_y_limit']
         self.screenshot_path = state['screenshot_path']
         self.self_update = False

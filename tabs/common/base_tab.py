@@ -63,6 +63,7 @@ class BaseTab:
         return self
 
     def load_state(self, file_path):
+        # file_path = "D:\.facultate\pyton\GUI-Resource-Monitor\states\cpu\state2021-05-16 17-05-01.pkl"
         try:
             with open(file_path, "rb") as file:
                 state = pickle.load(file)
