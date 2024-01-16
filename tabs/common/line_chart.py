@@ -3,10 +3,6 @@ import os
 from datetime import datetime
 import customtkinter
 import matplotlib.pyplot as plt
-import mplcyberpunk
-import tkinter as tk
-from tkinter import ttk
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 from tabs.common.base_chart import BaseChart
 from utils.general_utils import choose_equidistant_timestamps, seconds2human, get_current_date_time, \
@@ -111,3 +107,36 @@ class LineChart(BaseChart):
                              datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
                              str(time_diff),
                              self.y_label_function(avg)])
+
+    def get_state(self):
+        return {
+            'start_time': self.start_time,
+            'usage': self.usage,
+            'max_usage': self.max_usage,
+            'y_limit': self.y_limit,
+            'sum': self.sum,
+            # 'update_function': self.update_function,
+            'effects': self.effects,
+            'self_update': self.self_update,
+            'title': self.title,
+            # 'y_label_function': self.y_label_function,
+            'dinamic_y_limit': self.dinamic_y_limit,
+            'screenshot_path': self.screenshot_path
+        }
+
+    def load_state(self, state):
+        self.start_time = state['start_time']
+        self.usage = state['usage']
+        self.max_usage = state['max_usage']
+        self.y_limit = state['y_limit']
+        self.sum = state['sum']
+        self.update_function = state['update_function']
+        self.effects = state['effects']
+        self.self_update = state['self_update']
+        self.title = state['title']
+        self.y_label_function = state['y_label_function']
+        self.dinamic_y_limit = state['dinamic_y_limit']
+        self.screenshot_path = state['screenshot_path']
+        self.self_update = False
+        # self.update_line_chart()
+        return self

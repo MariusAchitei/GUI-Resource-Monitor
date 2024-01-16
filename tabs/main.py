@@ -37,4 +37,10 @@ TABS = {
         "init": init_network,
         "image": "network.png"
     }
+    "history": {
+        "button": None,
+        "frame": None,
+        "init": init_history,
+        "image": "logo.png"
+    }
 }

@@ -25,6 +25,7 @@ class MemoryTab(BaseTab):
         super().__init__(root)
         self.screenshot_path = f'{self.screenshot_path}/memory'
         self.export_path = f'{self.export_path}/memory'
+        self.state_path = f'{self.state_path}/memory'
         self.tabview.add("info")
         self.tabview.add("usage")
         self.tabview.tab("info").grid_columnconfigure(0, weight=1)  # configure grid of individual tabs
@@ -70,3 +71,18 @@ class MemoryTab(BaseTab):
     def save_as_csv(self):
         self.precent_usage_tab.save_state_as_csv(f'{self.export_path}/usage/precent.csv')
         self.bytes_usage_tab.save_state_as_csv(f'{self.export_path}/usage/bytes.csv')
+
+    def get_state(self):
+        return {
+            "info_tabs": self.info_tabs,
+            "usage_tabs": self.usage_tabs,
+
+        }
+
+    def load_state(self, state):
+        self.info_tabs = state["info_tabs"]
+        self.usage_tabs = state["usage_tabs"]
+        for info_tab in self.info_tabs:
+            self.populate_info(info_tab)
+        for usage_tab in self.usage_tabs:
+            self.populate_usage(usage_tab)

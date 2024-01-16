@@ -19,10 +19,12 @@ class ScrollableInfoFrame(customtkinter.CTkScrollableFrame):
         self.progress_bars = []
         self.enable_progress_bar = enable_progress_bar
         self.enable_average = enable_average
+        self.averages = []
+        self.sum = []
+        self.counts = []
         if enable_average:
             self.sum = [0] * len(item_list)
             self.counts = [0] * len(item_list)
-            self.averages = []
 
         for row, (key, value) in enumerate(item_list):
             self.add_item(row, key, value)
@@ -79,3 +81,27 @@ class ScrollableInfoFrame(customtkinter.CTkScrollableFrame):
             else:
                 row += [label.cget('text') for label in self.value_labels]
             writer.writerow(row)
+
+    def get_state(self):
+        return {
+            "start_time": self.start_time,
+            "key_labels": [label.cget('text') for label in self.key_labels],
+            "value_labels": [label.cget('text') for label in self.value_labels],
+            "progress_bars": [bar.get() for bar in self.progress_bars],
+            "averages": [label.cget('text') for label in self.averages],
+            "sum": self.sum,
+            "counts": self.counts
+        }
+
+    def load_state(self, state):
+        self.start_time = state['start_time']
+        for row, key in enumerate(state['key_labels']):
+            self.key_labels[row].configure(text=key)
+        for row, value in enumerate(state['value_labels']):
+            self.value_labels[row].configure(text=value)
+        for row, value in enumerate(state['progress_bars']):
+            self.progress_bars[row].set(value)
+        for row, value in enumerate(state['averages']):
+            self.averages[row].configure(text=value)
+        self.sum = state['sum']
+        self.counts = state['counts']

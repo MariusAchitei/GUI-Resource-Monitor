@@ -21,6 +21,7 @@ class NetworkTab(BaseTab):
         super().__init__(root)
         self.screenshot_path = f'{self.screenshot_path}/network'
         self.export_path = f'{self.export_path}/network'
+        self.state_path = f'{self.state_path}/network'
         self.tabview.add("speeds")
         self.tabview.add("devices")
         self.tabview.add("connections")
@@ -80,3 +81,13 @@ class NetworkTab(BaseTab):
     def save_as_csv(self):
         self.download_chart.save_state_as_csv(f'{self.export_path}/speeds/download.csv')
         self.upload_chart.save_state_as_csv(f'{self.export_path}/speeds/upload.csv')
+
+    def get_state(self):
+        return {
+            "download_chart": self.download_chart.get_state(),
+            "upload_chart": self.upload_chart.get_state(),
+        }
+
+    def load_state(self, state):
+        self.download_chart.load_state(state["download_chart"])
+        self.upload_chart.load_state(state["upload_chart"])

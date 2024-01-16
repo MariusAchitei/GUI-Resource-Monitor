@@ -18,6 +18,7 @@ class DiskTab(BaseTab):
         super().__init__(root)
         self.screenshot_path = f'{self.screenshot_path}/disk'
         self.export_path = f'{self.export_path}/disk'
+        self.state_path = f'{self.state_path}/disk'
         self.info_tabs = []
         self.partitions = []
         for part in get_partitions():
@@ -53,3 +54,15 @@ class DiskTab(BaseTab):
         for info_tab, mount_point in self.info_tabs:
             info_tab.save_state_as_csv(
                 f'{self.export_path}/{mount_point}.csv')
+
+    def get_state(self):
+        return {
+            "info_tabs": self.info_tabs,
+            "partitions": self.partitions
+        }
+
+    def load_state(self, state):
+        self.info_tabs = state["info_tabs"]
+        self.partitions = state["partitions"]
+        for info_tab, mount_point in self.info_tabs:
+            self.populate_info(info_tab, mount_point)
