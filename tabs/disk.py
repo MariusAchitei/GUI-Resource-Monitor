@@ -47,8 +47,9 @@ class DiskTab(BaseTab):
                                          width=self.width - 20,
                                          height=self.height - 20)
         info_frame.grid(row=0, column=0, padx=15, pady=15, sticky="ns")
-        self.info_tabs.append(info_frame)
+        self.info_tabs.append((info_frame, part.mountpoint[0]))
 
     def save_as_csv(self):
-        for info_tab in self.info_tabs:
-            info_tab.save_as_csv()
+        for info_tab, mount_point in self.info_tabs:
+            info_tab.save_state_as_csv(
+                f'{self.export_path}/{mount_point}.csv')

@@ -5,7 +5,7 @@ from utils.general_utils import create_directory_if_not_exists, get_current_date
 
 screenshot_path = "./screenshots"
 export_path = "./exports"
-WIDTH = 800
+WIDTH = 650
 HEIGHT = 700
 
 
@@ -17,14 +17,16 @@ class BaseTab:
         self.width = width
         self.height = height
 
-        self.save_fig_button = customtkinter.CTkButton(master=root, text="📷", command=self.save_tab)
+        self.top_frame = customtkinter.CTkFrame(root)
+        self.top_frame.grid(row=0, column=0, sticky="nsew")
+        self.save_fig_button = customtkinter.CTkButton(master=self.top_frame, text="📷", command=self.save_tab)
         self.save_fig_button.grid(row=0, column=0, padx=20, pady=20, sticky="n")
 
-        self.export_button = customtkinter.CTkButton(master=root, text="export", command=self.save_as_csv)
-        self.export_button.grid(row=0, column=2, padx=20, pady=20, sticky="n")
+        self.export_button = customtkinter.CTkButton(master=self.top_frame, text="export", command=self.save_as_csv)
+        self.export_button.grid(row=0, column=1, padx=20, pady=20, sticky="n")
 
         self.tabview = customtkinter.CTkTabview(root, width=self.width, height=self.height)
-        self.tabview.grid(row=1, column=0, padx=(20, 0), pady=(20, 0), sticky="nsew")
+        self.tabview.grid(row=1, padx=(20, 0), pady=(20, 0), sticky="nsew")
 
     def save_tab(self):
         x = self.root.winfo_rootx()

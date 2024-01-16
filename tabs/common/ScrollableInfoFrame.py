@@ -66,14 +66,16 @@ class ScrollableInfoFrame(customtkinter.CTkScrollableFrame):
             self.averages[row].configure(text=f'Average: {str(avg)}')
 
     def save_state_as_csv(self, csv_file_path):
-        create_directory_if_not_exists(csv_file_path)
+        # create_directory_if_not_exists(csv_file_path)
+        os.makedirs(os.path.dirname(csv_file_path), exist_ok=True)
         file_exists = os.path.exists(csv_file_path)
-        with open(csv_file_path, 'a', newline='') as file:
+        with open(csv_file_path, 'a+') as file:
             writer = csv.writer(file)
             if not file_exists:
                 writer.writerow(['start', 'end', 'elapsed_time'] + [label.cget('text') for label in self.key_labels])
             row = [datetime.now(), datetime.now() - self.start_time]
             if self.enable_average:
-                row += [label.cget('text') for label in self.averages]
+                row += [round(self.sum[row] / self.counts[row], 2) for row in range(0, len(self.sum))]
             else:
                 row += [label.cget('text') for label in self.value_labels]
+            writer.writerow(row)

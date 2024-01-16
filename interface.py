@@ -3,8 +3,8 @@ import os
 from PIL import Image
 from tabs.main import TABS
 
-WIDTH = 800
-HEIGTH = 700
+WIDTH = 900
+HEIGTH = 800
 
 
 class App(customtkinter.CTk):

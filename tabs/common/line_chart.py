@@ -20,7 +20,8 @@ def save_plot():
 
 
 class LineChart(BaseChart):
-    def __init__(self, root, update_function, effects=lambda x: (), y_limit=(0, 100), y_label_function=lambda x: x,
+    def __init__(self, root, update_function, effects=lambda x: (), y_limit=(0, 100),
+                 y_label_function=lambda x: f'{x}%',
                  dinamic_y_limit=False, self_update=True, title="Usage",
                  screenshot_path='screenshots/other'):
         super().__init__(root)
@@ -82,13 +83,10 @@ class LineChart(BaseChart):
         self.canvas.draw()
 
         avg = round(self.sum / len(self.usage), 2)
-        if self.y_limit[0] == 0 and self.y_limit[1] == 100:
-            self.label.configure(text=f"{value}%")
-            self.avg_label.configure(text=f'Average: {avg}%')
-        else:
-            self.label.configure(text=f"{self.y_label_function(value)} / {self.y_label_function(self.y_limit[1])}")
-            self.avg_label.configure(
-                text=f'Average: {self.y_label_function(avg)}')
+
+        self.label.configure(text=f"{self.y_label_function(value)} / {self.y_label_function(self.y_limit[1])}")
+        self.avg_label.configure(
+            text=f'Average: {self.y_label_function(avg)}')
 
         if self.self_update:
             self.root.after(1000, self.update_line_chart)
@@ -100,13 +98,16 @@ class LineChart(BaseChart):
         return self.usage[-1]
 
     def save_state_as_csv(self, csv_file_path):
-        create_directory_if_not_exists(csv_file_path)
+        # create_directory_if_not_exists(csv_file_path)
+        os.makedirs(os.path.dirname(csv_file_path), exist_ok=True)
         file_exists = os.path.exists(csv_file_path)
-        with open(csv_file_path, 'a', newline='') as file:
+        with open(csv_file_path, 'a+') as file:
             writer = csv.writer(file)
             if not file_exists:
                 writer.writerow(['start', 'end', 'elapsed_time', 'average'])
+            avg = round(self.sum / len(self.usage), 2)
+            time_diff = datetime.now() - self.start_time
             writer.writerow([self.start_time.strftime("%d/%m/%Y %H:%M:%S"),
                              datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
-                             str(datetime.now() - self.start_time),
-                             str(round(self.sum / len(self.usage), 2))])
+                             str(time_diff),
+                             self.y_label_function(avg)])
