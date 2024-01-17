@@ -4,6 +4,10 @@ from utils.general_utils import bytes2human
 
 
 def get_per_core_usage():
+    """
+    Gets the usage percent for each core.
+    :return: the usage percent for each core.
+    """
     cpus = {}
     for index, percent in enumerate(list(psutil.cpu_percent(percpu=True))):
         cpus[f"cpu{index + 1}"] = f"{percent}%"
@@ -11,10 +15,18 @@ def get_per_core_usage():
 
 
 def update_cpu_function():
+    """
+    Gets the CPU usage percent.
+    :return:
+    """
     return psutil.cpu_percent()
 
 
 def get_cpu_info():
+    """
+    Gets the CPU info.
+    :return: information about the CPU.
+    """
     info = cpuinfo.get_cpu_info()
     cpu_info = {
         "Brand": info["brand_raw"],

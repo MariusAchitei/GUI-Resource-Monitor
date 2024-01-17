@@ -10,7 +10,22 @@ from utils.general_utils import create_directory_if_not_exists
 
 
 class ScrollableInfoFrame(customtkinter.CTkScrollableFrame):
+    """
+    Class used to create a scrollable frame that contains a list of items.
+    It can be used to create a list of items that updates itself every second.
+    It can be used to create a list of items that doesn't update itself.
+    """
+
     def __init__(self, master, item_list, command=None, enable_progress_bar=False, enable_average=False, **kwargs):
+        """
+        Initializes the scrollable frame.
+        :param master: Sets the root of the scrollable frame.
+        :param item_list: The list of items that will be displayed in the scrollable frame.
+        :param command: The function that will be called to update the scrollable frame, every second.
+        :param enable_progress_bar: If set to true, a progress bar will be displayed next to each item.
+        :param enable_average:  If set to true, an average value will be displayed next to each item.
+        :param kwargs: Other arguments that will be passed to the super class.
+        """
         super().__init__(master, **kwargs)
         self.start_time = datetime.now()
         self.command = command
@@ -28,6 +43,13 @@ class ScrollableInfoFrame(customtkinter.CTkScrollableFrame):
             self.add_item(row, key, value)
 
     def add_item(self, row, key, value):
+        """
+        Adds an item to the scrollable frame.
+        :param row: the row where the item will be added
+        :param key: sets the key of the item (left side)
+        :param value: sets the value of the item (right side)
+        :return: void
+        """
         key_label = customtkinter.CTkLabel(self, text=key, width=20, anchor="w")
         value_label = customtkinter.CTkLabel(self, text=value, width=20, anchor="w")
 
@@ -50,10 +72,22 @@ class ScrollableInfoFrame(customtkinter.CTkScrollableFrame):
             self.averages.append(average_label)
 
     def update_items(self, item_list):
+        """
+        Updates the items in the scrollable frame.
+        :param item_list: the new list for the panel
+        :return: void
+        """
         for row, (key, value) in enumerate(item_list):
             self.update_item(row, key, value)
 
     def update_item(self, row, key, value):
+        """
+        Updates an item in the scrollable frame. Similar to add Item but it doesn't create a new item it updates it
+        :param row: the row where the item will be updated
+        :param key: sets the key of the item (left side)
+        :param value: sets the value of the item (right side)
+        :return:
+        """
         self.key_labels[row].configure(text=key)
         self.value_labels[row].configure(text=value)
         if self.enable_progress_bar:
@@ -66,6 +100,11 @@ class ScrollableInfoFrame(customtkinter.CTkScrollableFrame):
             self.averages[row].configure(text=f'Average: {str(avg)}')
 
     def save_state_as_csv(self, csv_file_path):
+        """
+        Saves the state of the scrollable frame as a csv file.
+        :param csv_file_path: sets the path where the csv file will be saved
+        :return: void
+        """
         # create_directory_if_not_exists(csv_file_path)
         os.makedirs(os.path.dirname(csv_file_path), exist_ok=True)
         file_exists = os.path.exists(csv_file_path)

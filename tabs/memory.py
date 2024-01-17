@@ -15,13 +15,26 @@ def init_memory(root):
 
 
 def y_label_function(x):
+    """
+    Converts the y value to a value that will be displayed on the y axis.
+    :param x: the y value in bytes.
+    :return: the value that will be displayed on the y axis in a human readable form.
+    """
     if type(x) == int:
         return bytes2human(int(x))
     return bytes2human(int(float(x)))
 
 
 class MemoryTab(BaseTab):
+    """
+    Class used to create the Memory tab. It inherits from BaseTab. It has 2 tabs: info and usage.
+    """
+
     def __init__(self, root):
+        """
+        Initializes the Memory tab. It creates the 2 tabs: info and usage.
+        :param root: the root of the tab.
+        """
         super().__init__(root)
         self.screenshot_path = f'{self.screenshot_path}/memory'
         self.export_path = f'{self.export_path}/memory'
@@ -34,6 +47,10 @@ class MemoryTab(BaseTab):
         # LineChart(self.tabview.tab("usage"), memory_update_function, mplcyberpunk.add_glow_effects)
 
     def populate_info(self):
+        """
+        Populates the info tab with a ScrollableInfoFrame that displays the memory info.
+        :return: void
+        """
         self.infotabview = customtkinter.CTkTabview(self.tabview.tab("info"), width=self.width - 20,
                                                     height=self.height - 20)
         self.infotabview.grid(row=0, column=2, sticky="nsew")
@@ -49,6 +66,10 @@ class MemoryTab(BaseTab):
             self.info_tabs.append(info_tab)
 
     def populate_usage(self):
+        """
+        Populates the usage tab with a line chart for usage percent and a ScrollableInfoFrame for pe core usage.
+        :return: void
+        """
         self.usagetabview = customtkinter.CTkTabview(self.tabview.tab("usage"), width=self.width, height=self.height)
         self.usagetabview.grid(row=0, column=2, sticky="nsew")
         self.usagetabview.add("precent")
@@ -68,5 +89,9 @@ class MemoryTab(BaseTab):
                                          title="Memory Usage in Bytes")
 
     def save_as_csv(self):
+        """
+        Saves the info tab of each and statistic as a csv.
+        :return: void
+        """
         self.precent_usage_tab.save_state_as_csv(f'{self.export_path}/usage/precent.csv')
         self.bytes_usage_tab.save_state_as_csv(f'{self.export_path}/usage/bytes.csv')

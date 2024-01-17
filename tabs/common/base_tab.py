@@ -10,7 +10,19 @@ HEIGHT = 700
 
 
 class BaseTab:
+    """
+    Base class for all tabs that are used in the application.
+    """
+
     def __init__(self, root, width=WIDTH, height=HEIGHT):
+        """
+        Initializes the tab adding to it a tabView, the screenshot and export button.
+        Sets default width and height for the tab.
+        Sets default screenshot and export path for the tab.
+        :param root: the root of the tab
+        :param width: the width of the tab
+        :param height: the height of the tab
+        """
         self.root = root
         self.screenshot_path = f'{screenshot_path}/other'
         self.export_path = f'{export_path}'
@@ -29,6 +41,10 @@ class BaseTab:
         self.tabview.grid(row=1, padx=(20, 0), pady=(20, 0), sticky="nsew")
 
     def save_tab(self):
+        """
+        Saves the tab as a screenshot.
+        :return: void
+        """
         x = self.root.winfo_rootx()
         y = self.root.winfo_rooty()
         width = self.root.winfo_width()
@@ -41,4 +57,8 @@ class BaseTab:
         screenshot.save(f'{self.screenshot_path}/screen-shot{get_current_date_time()}.png')
 
     def save_as_csv(self):
+        """
+        It is a virtual method that should be implemented in the child classes in order to export the data from the panel to a csv file.
+        :return: void
+        """
         pass

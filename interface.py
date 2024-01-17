@@ -8,7 +8,15 @@ HEIGTH = 800
 
 
 class App(customtkinter.CTk):
+    """
+    Main application class
+    """
+
     def __init__(self):
+        """
+        Initialize the main application, create the main window and all frames using the TABS dictionary from tabs/main.py
+        for an easy way to add new tabs
+        """
         super().__init__()
 
         self.title("GUI-Resource-Monitor")
@@ -66,9 +74,19 @@ class App(customtkinter.CTk):
             TABS[tab]["init"](TABS[tab]["frame"])
 
     def tab_button_event(self, name):
+        """
+        Create a lambda function for the tab button event
+        :param name: the name of the tab to select
+        :return: a lambda function that will select the tab, used for the nav buttons
+        """
         return lambda: self.select_frame_by_name(name)
 
     def select_frame_by_name(self, name):
+        """
+        Select a frame by name and show it in the main window and hide all other frames
+        :param name: the name of the frame to show
+        :return: void
+        """
         # set button color for selected button
         for tab in TABS:
             TABS[tab]["button"].configure(fg_color=("gray75", "gray25") if name == tab else "transparent")
@@ -79,6 +97,11 @@ class App(customtkinter.CTk):
                 TABS[tab]["frame"].grid_forget()
 
     def change_appearance_mode_event(self, new_appearance_mode):
+        """
+        Change the appearance mode of the application
+        :param new_appearance_mode: theme to change to
+        :return: void
+        """
         customtkinter.set_appearance_mode(new_appearance_mode)
 
 

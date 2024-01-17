@@ -13,8 +13,15 @@ def init_disk(root):
 
 
 class DiskTab(BaseTab):
+    """
+    Class used to create the Disk tab. It inherits from BaseTab. It has a tab for each partition.
+    """
 
     def __init__(self, root):
+        """
+        Initializes the Disk tab. It creates a tab for each partition.
+        :param root: SETS the root of the tab.
+        """
         super().__init__(root)
         self.screenshot_path = f'{self.screenshot_path}/disk'
         self.export_path = f'{self.export_path}/disk'
@@ -27,6 +34,12 @@ class DiskTab(BaseTab):
             self.populate_partition(self.tabview.tab(part.mountpoint), part)
 
     def populate_partition(self, tab, part):
+        """
+        Populates a partition tab with a PieChart and a ScrollableInfoFrame.
+        :param tab: THE tab that will be populated.
+        :param part: the partition that will be used to populate the tab.
+        :return: void
+        """
         usage = get_partition_usage(part)
         tabview = customtkinter.CTkTabview(tab, width=self.width - 20, height=self.height - 20)
         tabview.grid(row=0, column=2, sticky="nsew")
@@ -40,6 +53,12 @@ class DiskTab(BaseTab):
         self.populate_info(tabview.tab("info"), part)
 
     def populate_info(self, tab, part):
+        """
+        Populates the info tab with a ScrollableInfoFrame that displays the partition info.
+        :param tab: the tab that will be populated.
+        :param part: the partition that will be used to populate the tab.
+        :return:
+        """
         info = get_partition_info(part)
 
         info_frame = ScrollableInfoFrame(master=tab,
@@ -50,6 +69,10 @@ class DiskTab(BaseTab):
         self.info_tabs.append((info_frame, part.mountpoint[0]))
 
     def save_as_csv(self):
+        """
+        Saves the info tab of each partition as a csv.
+        :return:
+        """
         for info_tab, mount_point in self.info_tabs:
             info_tab.save_state_as_csv(
                 f'{self.export_path}/{mount_point}.csv')

@@ -20,10 +20,28 @@ def save_plot():
 
 
 class LineChart(BaseChart):
+    """
+    Class used to create a very customisable line chart. It can be used to create a line chart that updates itself
+    every second. It can be used to create a line chart that doesn't update itself.
+    It has at his core a matplotlib figure and a matplotlib axes. It has a canvas that is used to display the figure.
+    """
+
     def __init__(self, root, update_function, effects=lambda x: (), y_limit=(0, 100),
                  y_label_function=lambda x: f'{x}%',
                  dinamic_y_limit=False, self_update=True, title="Usage",
                  screenshot_path='screenshots/other'):
+        """
+        Initializes the line chart.
+        :param root: Sets the root of the line chart.
+        :param update_function: is the function that is called to update the line chart, every second.
+        :param effects: used to customise the default style of the line chart (plt).
+        :param y_limit: It can be procentual or absolute. It is used to set the y limit of the line chart.
+        :param y_label_function: The value of the y axis is passed to this function to be converted to a value that will be shown on the figure ((x) to x% or x to x mb/s).
+        :param dinamic_y_limit: If set to true, the y limit will be updated every time a new maximum value is found.
+        :param self_update: If set to true, the line chart will update itself every second.
+        :param title: The title of the line chart.
+        :param screenshot_path: The path where the screenshots of the line chart will be saved.
+        """
         super().__init__(root)
         self.start_time = datetime.now()
         self.update_function = update_function
@@ -51,6 +69,10 @@ class LineChart(BaseChart):
             self.update_line_chart()
 
     def update_line_chart(self):
+        """
+        Updates the line chart.
+        :return: void
+        """
         value = self.update_function()
         self.sum += value
         if self.max_usage < value:
@@ -92,12 +114,25 @@ class LineChart(BaseChart):
             self.root.after(1000, self.update_line_chart)
 
     def get_max_value(self):
+        """
+        Returns the maximum value of the line chart.
+        :return: the maximum value of the line chart
+        """
         return self.max_usage
 
     def get_current_value(self):
+        """
+        Returns the current value of the line chart.
+        :return: the current value of the line chart
+        """
         return self.usage[-1]
 
     def save_state_as_csv(self, csv_file_path):
+        """
+        Saves the state of the line chart as a csv file.
+        :param csv_file_path: the path where the csv file will be saved
+        :return: void
+        """
         # create_directory_if_not_exists(csv_file_path)
         os.makedirs(os.path.dirname(csv_file_path), exist_ok=True)
         file_exists = os.path.exists(csv_file_path)

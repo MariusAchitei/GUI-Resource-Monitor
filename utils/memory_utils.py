@@ -4,6 +4,9 @@ import psutil
 
 from utils.general_utils import bytes2human
 
+"""
+This file contains functions that are used to get information about the memory.
+"""
 memory_type_by_code = {
     "0": "Unknown",
     "1": "Other",
@@ -36,22 +39,43 @@ memory_type_by_code = {
 
 
 def get_memory_type_by_code(code):
+    """
+    Gets the memory type by code.
+    :param code:
+    :return:
+    """
     return memory_type_by_code[code]
 
 
 def memory_precent_update_function():
+    """
+    Gets the memory usage percent.
+    :return:
+    """
     return psutil.virtual_memory().percent
 
 
 def memory_bytes_update_function():
+    """
+    Gets the memory usage in bytes.
+    :return:
+    """
     return psutil.virtual_memory().used
 
 
 def get_memory_limit():
+    """
+    Gets the memory limit.
+    :return:
+    """
     return 0, psutil.virtual_memory().total
 
 
 def get_ram_info():
+    """
+    Gets the ram info. uses wmic and a subprocess to get the info in a csv format then reads it and maps it to a dict.
+    :return:
+    """
     cmd = "wmic MemoryChip get /format:csv"
     process = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
     result, error = process.communicate()

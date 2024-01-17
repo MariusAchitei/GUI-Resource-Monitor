@@ -23,6 +23,7 @@ def list_csv_files(folder_path):
 
 
 def on_file_select(file_name):
+    """ Opens the given file in notepad."""
     print(os.path.exists(file_name))
     try:
         print(file_name)
@@ -32,7 +33,15 @@ def on_file_select(file_name):
 
 
 class Home(BaseTab):
+    """
+    Class used to create the Home tab. It inherits from BaseTab. It has 1 tab, the selectable csv panel.
+    """
+
     def __init__(self, root):
+        """
+        Initializes the Home tab. It creates the selectable csv panel.
+        :param root: the root of the tab.
+        """
         super().__init__(root)
         self.screenshot_path = f'{self.screenshot_path}/home'
         self.export_path = f'{self.export_path}/home'

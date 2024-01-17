@@ -6,6 +6,11 @@ from tabs.nework import init_network
 
 screenshot_path = "screenshots"
 
+"""
+    This is the main configuration file for the application.
+    Here you can change the default settings of the application and configure the tabs or add new ones.
+"""
+
 TABS = {
     "home": {
         "button": None,

@@ -5,6 +5,10 @@ import time
 
 
 def get_devices_info():
+    """
+    Gets info abot the connected devices.
+    :return: info about the connected devices.
+    """
     info = psutil.net_if_stats()
     keys_to_delete = []
     for key, value in info.items():
@@ -19,6 +23,10 @@ def get_devices_info():
 
 
 def get_connections_network_info():
+    """
+    Gets info about the connections.
+    :return:
+    """
     result = subprocess.run(['netsh', 'wlan', 'show', 'interfaces'], capture_output=True, text=True)
     if result.returncode != 0:
         raise Exception("Failed to run command")
@@ -35,6 +43,10 @@ def get_connections_network_info():
 
 
 def update_download_speed():
+    """
+    Updates the download speed. This function is blocking so is used in a separate thread to update the chart.
+    :return: the download speed.
+    """
     initial_data = psutil.net_io_counters()
     interval = 1
     time.sleep(interval)
@@ -44,6 +56,10 @@ def update_download_speed():
 
 
 def update_upload_speed():
+    """
+    Updates the upload speed. This function is blocking so is used in a separate thread to update the chart.
+    :return: the upload speed.
+    """
     initial_data = psutil.net_io_counters()
     interval = 1
     time.sleep(interval)

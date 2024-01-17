@@ -6,7 +6,19 @@ from tabs.common.base_chart import BaseChart
 
 
 class PieChart(BaseChart):
+    """
+    Class used to create a very customisable pie chart.
+    """
+
     def __init__(self, root, proportions, labels, title="Pie Chart", screenshot_path='screenshots/other'):
+        """
+        Initializes the pie chart.
+        :param root: the root of the pie chart.
+        :param proportions: the proportions of the pie chart.
+        :param labels: the labels of the pie chart.
+        :param title: the title of the pie chart.
+        :param screenshot_path: the path where the screenshots of the pie chart will be saved.
+        """
         super().__init__(root, screenshot_path=screenshot_path)
 
         wedge_colors = ['#86c7f3', '#8be06e', '#f39c7c', '#ffb366']
