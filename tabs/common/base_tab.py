@@ -1,5 +1,8 @@
+from abc import abstractmethod
+
 import customtkinter
 from PIL import ImageGrab
+import time
 
 from utils.general_utils import create_directory_if_not_exists, get_current_date_time
 
@@ -39,6 +42,11 @@ class BaseTab:
 
         self.tabview = customtkinter.CTkTabview(root, width=self.width, height=self.height)
         self.tabview.grid(row=1, padx=(20, 0), pady=(20, 0), sticky="nsew")
+        self.root.after(1000 * 60, self.update)
+
+    def update(self):
+        self.save_as_csv()
+        self.root.after(1000 * 60, self.update)
 
     def save_tab(self):
         """
@@ -56,6 +64,7 @@ class BaseTab:
 
         screenshot.save(f'{self.screenshot_path}/screen-shot{get_current_date_time()}.png')
 
+    @abstractmethod
     def save_as_csv(self):
         """
         It is a virtual method that should be implemented in the child classes in order to export the data from the panel to a csv file.

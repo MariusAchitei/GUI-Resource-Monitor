@@ -32,6 +32,11 @@ def on_file_select(file_name):
         print(e)
 
 
+def select_file(file_path):
+    """ Opens a file selection dialog. """
+    return lambda: on_file_select(file_path)
+
+
 class Home(BaseTab):
     """
     Class used to create the Home tab. It inherits from BaseTab. It has 1 tab, the selectable csv panel.
@@ -50,7 +55,7 @@ class Home(BaseTab):
         for index, file in enumerate(list_csv_files(export_path)):
             self.save_fig_button = customtkinter.CTkButton(master=self.tabview.tab("info"),
                                                            text="📝 " + file.split("/")[-1],
-                                                           command=lambda: on_file_select(file))
+                                                           command=select_file(file))
             self.save_fig_button.pack(padx=20, pady=10)
 
     def populate_info(self):

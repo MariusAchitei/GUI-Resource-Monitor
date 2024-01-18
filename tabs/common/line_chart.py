@@ -73,6 +73,12 @@ class LineChart(BaseChart):
         Updates the line chart.
         :return: void
         """
+        # if len(self.usage) > 10:
+        #     self.save_chart()
+        #     self.reset()
+        #     if self.self_update:
+        #         self.root.after(1000, self.update_line_chart)
+        #     return
         value = self.update_function()
         self.sum += value
         if self.max_usage < value:
@@ -113,6 +119,15 @@ class LineChart(BaseChart):
         if self.self_update:
             self.root.after(1000, self.update_line_chart)
 
+    def reset(self):
+        """
+        Resets the line chart.
+        :return: void
+        """
+        self.usage = []
+        self.sum = 0
+        self.max_usage = 0
+
     def get_max_value(self):
         """
         Returns the maximum value of the line chart.
@@ -146,3 +161,4 @@ class LineChart(BaseChart):
                              datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
                              str(time_diff),
                              self.y_label_function(avg)])
+        self.reset()
